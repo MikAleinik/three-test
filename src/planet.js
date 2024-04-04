@@ -1,14 +1,5 @@
 import * as THREE from '../node_modules/three/build/three.module.min.js';
-
-/**
- * @typedef {{
- * radius: number,
- * inclinationAngle: number,
- * rotationSpeed: number,
- * rotationDirectionOnClock: boolean,
- * color: string,
- * }} GeometryParams
- */
+import SpaceObject from './space-object.js';
 /**
  * @typedef {{
  * x: number,
@@ -24,80 +15,32 @@ import * as THREE from '../node_modules/three/build/three.module.min.js';
  * rotationDirectionOnClock: boolean,
  * }} OrbitParams
  */
-export default class Planet {
-  #planet = null;
-  #orbit = null;
-
+export default class Planet extends SpaceObject {
   /**
-   * @param {string} name
-   * @param {GeometryParams} planetParam
-   * @param {OrbitParams} orbitParam
+   * @param {SpaceObjectParams & OrbitParams} planetParam
    */
-  constructor(name, planetParam, orbitParam) {
-    this.name = name;
-    this.planetParam = planetParam;
-    this.orbitParam = orbitParam;
+  constructor(planetParam) {
+    super(planetParam);
+    this.objectParam = planetParam;
 
-    this.#planet = this.#createPlanet(planetParam);
-    this.#orbit = this.#createOrbit(orbitParam);
-  }
-  getPlanet() {
-    return this.#planet;
-  }
-  getOrbit() {
-    return this.#orbit;
+    this.spaceObject = this.#createPlanet(planetParam);
   }
   /**
-   * @param {GeometryParams} planetParam
-   * @returns {THREE.Mesh}
+   * @param {OrbitParams} planetParam
+   * @returns {THREE.Object3D}
    */
   #createPlanet(planetParam) {
-    const geometry = new THREE.SphereGeometry(planetParam.radius, 32, 32, 0, 0.5, 0);
-    // const material = new THREE.MeshBasicMaterial({ color: planetParam.color });
-    const material = new THREE.LineDashedMaterial({
-      color: planetParam.color,
-      linewidth: 1,
-      scale: 1,
-      dashSize: 3,
-      gapSize: 1,
-    });
+    const planet = new THREE.Object3D('test');
+    planet.position.set(0, 0, 0);
 
-    return new THREE.Mesh(geometry, material);
-  }
-  /**
-   * @param {OrbitParams} orbitParam
-   * @returns {THREE.Mesh}
-   */
-  #createOrbit(orbitParam) {
-    // const curve = new THREE.EllipseCurve(
-    //   orbitParam.center.x, // ax
-    //   orbitParam.center.y, // aY
-    //   orbitParam.diameter / 2, // xRadius
-    //   orbitParam.diameter / 2, // yRadius
-    //   0, // aStartAngle
-    //   2 * Math.PI, // aEndAngle
-    //   false, // aClockwise
-    //   0 // aRotation
-    // );
+    planet.add(this.spaceObject);
 
-    // const points1 = curve.getPoints(300).filter((value, index) => index % 2 === 0);
-    const points = [];
-    // for (let i = 0; i < 360; i += 1) {
-    //   const vector = new THREE.Vector3()
-    //   points.push({
-    //     x: Math.cos(i) * orbitParam.radius,
-    //     y: Math.sin(i) * orbitParam.radius,
-    //   });
-    // }
+    const geometryOrbit = new THREE.RingGeometry(20, 20.1, 32);
+    const materialOrbit = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+    const orbit = new THREE.Mesh(geometryOrbit, materialOrbit);
+    orbit.rotation.x = -Math.PI / 2;
+    planet.add(orbit);
 
-    points.push(new THREE.Vector3(-10, 0, 0));
-    points.push(new THREE.Vector3(0, 10, 0));
-    points.push(new THREE.Vector3(10, 0, 0));
-
-    const geometry = new THREE.BufferGeometry().setFromPoints(points);
-
-    const material = new THREE.LineBasicMaterial({ color: 0x000000 });
-
-    return new THREE.Mesh(geometry, material);
+    return planet;
   }
 }

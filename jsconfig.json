@@ -1,14 +1,13 @@
 {
     "compilerOptions": {
-        "module": "ES2020",
-        "allowJs": true,
-        "checkJs": true,
-        "target": "ES2020",
+        "module": "ES2022",
+        "checkJs": false,
+        "target": "ES2022",
         "removeComments": true,
         "sourceMap": true,
         "strictNullChecks": false,
         "strict": false
     },
     "include": ["src/**/*"],
-    "exclude": ["node_modules", "**/*.spec.ts"]
+    "exclude": ["node_modules"]
 }

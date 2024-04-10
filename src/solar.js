@@ -2,20 +2,22 @@ import * as THREE from '../node_modules/three/build/three.module.js';
 import SpaceObject from './space-object.js';
 /**
  * @typedef {{
+ * object: SpaceObjectParams,
  * color: string,
  * power: number,
- * }} SolarParams
+ * }} StarParams
  */
 export default class Solar extends SpaceObject {
   #pointLight = null;
   /**
-   * @param {SpaceObjectParams & SolarParams} solarParam
+   * @param {StarParams} starParam
    */
-  constructor(solarParam) {
-    super(solarParam);
-    this.objectParam = solarParam;
+  constructor(starParam) {
+    super(starParam.object);
+    this.starParam = starParam;
 
-    this.#pointLight = this.#createLight(solarParam);
+    this.spaceObject = this.#updateSpaceObject(starParam);
+    this.#pointLight = this.#createLight(starParam);
   }
   /**
    * @returns {THREE.PointLight}
@@ -24,14 +26,26 @@ export default class Solar extends SpaceObject {
     return this.#pointLight;
   }
   /**
-   * @param {SolarParams} solarParam
+   * @param {StarParams} starParam
+   */
+  #updateSpaceObject(starParam) {
+    const { spaceObject } = this;
+
+    spaceObject.material.color = new THREE.Color(starParam.color);
+
+    // this.spaceObject.transparent = true;
+    // this.spaceObject.opacity = 0.5;
+    return spaceObject;
+  }
+  /**
+   * @param {StarParams} starParam
    * @returns {THREE.PointLight}
    */
-  #createLight(solarParam) {
-    const pointLight = new THREE.PointLight(solarParam.color, 1, 360);
+  #createLight(starParam) {
+    const pointLight = new THREE.PointLight(starParam.color, 1, 360);
     pointLight.position.set(0, 0, 0);
     pointLight.castShadow = true;
-    pointLight.intensity = solarParam.power;
+    pointLight.intensity = starParam.power;
     return pointLight;
   }
 }

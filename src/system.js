@@ -16,9 +16,11 @@ export default class PlanetSystem {
     this.#renderer = this.#createSystem();
     container.append(this.#renderer.domElement);
     this.#animate();
+
+    this.#tempLight();
   }
   showGrid() {
-    const grid = new THREE.GridHelper(500, 100, 0x666666, 0x444444);
+    const grid = new THREE.GridHelper(1000, 20, 0x666666, 0x444444);
     grid.rotateY(Math.PI / 2);
     this.#scene.add(grid);
   }
@@ -35,10 +37,10 @@ export default class PlanetSystem {
     this.#scene.add(plane);
   }
   /**
-   * @param {THREE.Mesh} spaceObject
+   * @param {import('./space-object.js').default} spaceObject
    */
   addObject(spaceObject) {
-    this.#scene.add(spaceObject);
+    this.#scene.add(spaceObject.getObject());
   }
   /**
    * @returns {THREE.WebGLRenderer}
@@ -55,8 +57,8 @@ export default class PlanetSystem {
     this.#scene.background = new THREE.Color(0xdcdcdc);
 
     this.#camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100000);
-    this.#camera.position.z = 400;
-    this.#camera.position.y = 70;
+    this.#camera.position.z = 200;
+    this.#camera.position.y = 100;
     this.#camera.position.x = -30;
 
     this.#controls = new OrbitControls(this.#camera, renderer.domElement);
@@ -65,7 +67,6 @@ export default class PlanetSystem {
     return renderer;
   }
   #clickHandler() {
-    console.log('click');
     const mouse = new THREE.Vector2();
     this.#raycaster.setFromCamera(mouse, this.#camera);
     const intersects = this.#raycaster.intersectObjects(this.#scene.children, true);
@@ -76,7 +77,20 @@ export default class PlanetSystem {
   }
   #animate() {
     requestAnimationFrame(this.#animate.bind(this));
+
     this.#controls.update();
     this.#renderer.render(this.#scene, this.#camera);
+  }
+  #tempLight() {
+    const pointLight = new THREE.PointLight(0xffffff, 1, 300);
+    pointLight.position.set(0, 100, 0);
+    pointLight.castShadow = true;
+    pointLight.intensity = 75000;
+
+    this.#scene.add(pointLight);
+
+    const sphereSize = 3;
+    const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
+    this.#scene.add(pointLightHelper);
   }
 }

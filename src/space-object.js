@@ -1,5 +1,5 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
-import img from './img/cube.png';
+
 /**
  * @typedef {{
  * name: string,
@@ -10,10 +10,12 @@ import img from './img/cube.png';
  * description: Description,
  * radius: number,
  * rotationSpeed: number,
- * rotationDirectionOnClock: boolean,
+ * rotationDirection: -1 | 1,
  * color: string,
  * }} SpaceObjectParams
  */
+const defaultColor = 0xffffff;
+
 export default class SpaceObject {
   spaceObject = null;
   /**
@@ -27,21 +29,24 @@ export default class SpaceObject {
   getObject() {
     return this.spaceObject;
   }
+  animate() {}
   /**
    * @param {SpaceObjectParams} geometryParam
    * @returns {THREE.Mesh}
    */
   #createObject(geometryParam) {
     const geometry = new THREE.SphereGeometry(geometryParam.radius, 32, 32);
-    const loader = new THREE.TextureLoader();
-    const material = new THREE.MeshLambertMaterial({ map: loader.load(img) });
-    const sphere = new THREE.Mesh(geometry, material);
-    sphere.transparent = true;
-    sphere.opacity = 0.5;
-    sphere.receiveShadow = true;
-    sphere.castShadow = true;
-    sphere.position.set(0, 0, 0);
 
-    return sphere;
+    // const loader = new THREE.TextureLoader();
+    // const material = new THREE.MeshLambertMaterial({ map: loader.load(img) });
+
+    const material = new THREE.MeshLambertMaterial({ color: defaultColor });
+
+    const spaceObject = new THREE.Mesh(geometry, material);
+    spaceObject.receiveShadow = true;
+    spaceObject.castShadow = true;
+    spaceObject.position.set(0, 0, 0);
+
+    return spaceObject;
   }
 }

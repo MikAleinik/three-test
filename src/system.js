@@ -24,6 +24,11 @@ export default class PlanetSystem {
     grid.rotateY(Math.PI / 2);
     this.#scene.add(grid);
   }
+  showAxis() {
+    const axes = new THREE.AxesHelper(50);
+    axes.position.set(-75, 0, -25);
+    this.#scene.add(axes);
+  }
   showPlane() {
     const geometry1 = new THREE.PlaneGeometry(400, 200, 100, 100);
     const material1 = new THREE.MeshLambertMaterial({ color: 0x008cf0 });

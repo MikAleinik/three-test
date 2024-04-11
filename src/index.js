@@ -5,6 +5,7 @@ import PlanetSystem from './system.js';
 
 const system = new PlanetSystem(document.body, 'Солнечная система');
 system.showGrid();
+system.showAxis();
 
 const solarParams = {
   object: {
@@ -36,7 +37,10 @@ const earthParams = {
     radius: 50,
     rotationSpeed: 0.01,
     rotationDirection: 1,
-    angle: [0, 0, 0],
+    angle: {
+      x: 45,
+      z: 45,
+    },
   },
   sputnik: [
     {

@@ -20,13 +20,14 @@ export default class PlanetSystem {
     this.#tempLight();
   }
   showGrid() {
-    const grid = new THREE.GridHelper(1000, 20, 0x666666, 0x444444);
+    const grid = new THREE.GridHelper(1000, 20, 0xc0c0c0, 0xc0c0c0);
     grid.rotateY(Math.PI / 2);
     this.#scene.add(grid);
   }
   showAxis() {
-    const axes = new THREE.AxesHelper(50);
-    axes.position.set(-75, 0, -25);
+    // Ось X красного цвета, ось Y - зеленая, ось Z - синяя
+    const axes = new THREE.AxesHelper(100);
+    axes.position.set(0, 0, 0);
     this.#scene.add(axes);
   }
   showPlane() {

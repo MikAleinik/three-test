@@ -38,8 +38,8 @@ const earthParams = {
     rotationSpeed: 0.01,
     rotationDirection: 1,
     angle: {
-      x: 45,
-      z: 45,
+      x: 0,
+      z: 0,
     },
   },
   sputnik: [

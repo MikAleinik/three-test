@@ -2,6 +2,7 @@ import * as THREE from '../node_modules/three/build/three.module.js';
 import SpaceObject from './space-object.js';
 /**
  * @typedef {{
+ * units: CoeffParam,
  * object: SpaceObjectParams,
  * color: string,
  * power: number,
@@ -13,17 +14,25 @@ export default class Solar extends SpaceObject {
    * @param {StarParams} starParam
    */
   constructor(starParam) {
-    super(starParam.object);
-    this.starParam = starParam;
+    super(starParam.object, starParam.units);
+    this.objectParam = starParam;
 
     this.spaceObject = this.#updateSpaceObject(starParam);
     this.#pointLight = this.#createLight(starParam);
+
+    this.#animate();
   }
   /**
    * @returns {THREE.PointLight}
    */
   getLight() {
     return this.#pointLight;
+  }
+  #animate() {
+    requestAnimationFrame(this.#animate.bind(this));
+
+    this.spaceObject.rotation.z +=
+      (this.objectParam.object.rotationSpeed * this.objectParam.object.rotationDirection) / this.coeffParam.speedCoeff;
   }
   /**
    * @param {StarParams} starParam
@@ -33,8 +42,6 @@ export default class Solar extends SpaceObject {
 
     spaceObject.material.color = new THREE.Color(starParam.color);
 
-    // this.spaceObject.transparent = true;
-    // this.spaceObject.opacity = 0.5;
     return spaceObject;
   }
   /**

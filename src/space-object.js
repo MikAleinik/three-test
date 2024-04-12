@@ -1,11 +1,14 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
-
+// import img from './img/cube.png';
 /**
+ * @typedef {{
+ * speedCoeff: number
+ * dimensionCoeff: number
+ * }} CoeffParam
  * @typedef {{
  * name: string,
  * description: string,
  * }} Description
- *
  * @typedef {{
  * description: Description,
  * radius: number,
@@ -21,10 +24,11 @@ export default class SpaceObject {
   /**
    * @param {SpaceObjectParams} geometryParam
    */
-  constructor(geometryParam) {
+  constructor(geometryParam, coeffParam) {
     this.objectParam = geometryParam;
+    this.coeffParam = coeffParam;
 
-    this.spaceObject = this.#createObject(geometryParam);
+    this.spaceObject = this.#createObject(geometryParam, coeffParam);
   }
   getObject() {
     return this.spaceObject;
@@ -32,10 +36,11 @@ export default class SpaceObject {
   animate() {}
   /**
    * @param {SpaceObjectParams} geometryParam
+   * @param {CoeffParam} coeffParam
    * @returns {THREE.Mesh}
    */
-  #createObject(geometryParam) {
-    const geometry = new THREE.SphereGeometry(geometryParam.radius, 32, 32);
+  #createObject(geometryParam, coeffParam) {
+    const geometry = new THREE.SphereGeometry(geometryParam.radius / coeffParam.dimensionCoeff, 32, 32);
 
     // const loader = new THREE.TextureLoader();
     // const material = new THREE.MeshLambertMaterial({ map: loader.load(img) });

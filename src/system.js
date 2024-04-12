@@ -63,9 +63,9 @@ export default class PlanetSystem {
     this.#scene.background = new THREE.Color(0xdcdcdc);
 
     this.#camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100000);
-    this.#camera.position.z = 200;
-    this.#camera.position.y = 100;
-    this.#camera.position.x = -30;
+    this.#camera.position.z = 600;
+    this.#camera.position.y = -1200;
+    this.#camera.position.x = 0;
 
     this.#controls = new OrbitControls(this.#camera, renderer.domElement);
     this.#raycaster = new THREE.Raycaster();
@@ -88,10 +88,10 @@ export default class PlanetSystem {
     this.#renderer.render(this.#scene, this.#camera);
   }
   #tempLight() {
-    const pointLight = new THREE.PointLight(0xffffff, 1, 300);
-    pointLight.position.set(0, 100, 0);
+    const pointLight = new THREE.PointLight(0xffffff, 1, 500);
+    pointLight.position.set(0, 0, 400);
     pointLight.castShadow = true;
-    pointLight.intensity = 75000;
+    pointLight.intensity = 750000;
 
     this.#scene.add(pointLight);
 

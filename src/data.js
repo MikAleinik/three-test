@@ -1,24 +1,10 @@
-/* eslint-disable no-unused-vars */
-import Planet from './planet.js';
-import Solar from './solar.js';
-import PlanetSystem from './system.js';
-
-// Скорость вращения по орбите в км/с
-// Скорость вращения по оси в км/с
-// Радиус орбиты в км
-// Радиус объектов в км
 const speedCoeff = 10000;
-const dimensionCoeff = 1;
+const dimensionCoeff = 10000;
 
 const units = {
   speedCoeff,
   dimensionCoeff,
 };
-
-const system = new PlanetSystem(document.body, 'Солнечная система');
-// system.showGrid();
-// system.showAxis();
-
 const solarParams = {
   units,
   object: {
@@ -26,8 +12,8 @@ const solarParams = {
       name: 'Солнце',
       description: 'Описание',
     },
-    radius: 100,
-    rotationSpeed: 100,
+    radius: 696340,
+    rotationSpeed: 2,
     rotationDirection: 1,
   },
   color: 0xffff00,
@@ -41,12 +27,12 @@ const mercuryParams = {
       name: 'Меркурий',
       description: 'Описание Меркурий',
     },
-    radius: 3,
+    radius: 2439.7,
     rotationSpeed: 0.003025555556,
     rotationDirection: 1,
   },
   orbit: {
-    radius: 200,
+    radius: 46001009,
     rotationSpeed: 47.36,
     rotationDirection: 1,
     angle: {
@@ -63,12 +49,12 @@ const venusParams = {
       name: 'Венера',
       description: 'Описание Венера',
     },
-    radius: 6,
+    radius: 6051.8,
     rotationSpeed: 0.001811111111,
     rotationDirection: 1,
   },
   orbit: {
-    radius: 300,
+    radius: 107476259,
     rotationSpeed: 35.02,
     rotationDirection: 1,
     angle: {
@@ -85,12 +71,12 @@ const earthParams = {
       name: 'Земля',
       description: 'Описание земля',
     },
-    radius: 15,
+    radius: 63780.1,
     rotationSpeed: 0.465111111111,
     rotationDirection: 1,
   },
   orbit: {
-    radius: 400,
+    radius: 147098290,
     rotationSpeed: 29.783,
     rotationDirection: 1,
     angle: {
@@ -106,13 +92,13 @@ const earthParams = {
           name: 'Луна',
           description: 'Описание луна',
         },
-        radius: 3,
+        radius: 17380.14,
         rotationSpeed: 0.010277777778,
         rotationDirection: 1,
       },
       orbit: {
-        radius: 20,
-        rotationSpeed: 360,
+        radius: 363104,
+        rotationSpeed: 1.023,
         rotationDirection: 1,
         angle: {
           x: 0,
@@ -129,12 +115,12 @@ const marsParams = {
       name: 'Марс',
       description: 'Описание Марс',
     },
-    radius: 6,
+    radius: 3389.5,
     rotationSpeed: 0.241172222222,
     rotationDirection: 1,
   },
   orbit: {
-    radius: 500,
+    radius: 2.06655 * 10 ** 8,
     rotationSpeed: 24.13,
     rotationDirection: 1,
     angle: {
@@ -150,13 +136,13 @@ const marsParams = {
           name: 'Фобос',
           description: 'Описание Фобос',
         },
-        radius: 2,
+        radius: 11.1,
         rotationSpeed: 2.14, // не верное значение
         rotationDirection: 1,
       },
       orbit: {
-        radius: 9,
-        rotationSpeed: 440,
+        radius: 9377.2,
+        rotationSpeed: 2.14, // приблизительно
         rotationDirection: 1,
         angle: {
           x: 0,
@@ -172,13 +158,13 @@ const marsParams = {
           name: 'Деймос',
           description: 'Описание Деймос',
         },
-        radius: 3,
+        radius: 16,
         rotationSpeed: 3.94, // не верное значение
         rotationDirection: 1,
       },
       orbit: {
-        radius: 15,
-        rotationSpeed: 370,
+        radius: 23458,
+        rotationSpeed: 3.94, // не верное значение
         rotationDirection: 1,
         angle: {
           x: 0,
@@ -189,11 +175,28 @@ const marsParams = {
     },
   ],
 };
-
-const solar = new Solar(solarParams);
-system.addObject(solar);
-
-system.addObject(new Planet(mercuryParams));
-system.addObject(new Planet(venusParams));
-system.addObject(new Planet(earthParams));
-system.addObject(new Planet(marsParams));
+// const venusParams = {
+//   units,
+//   object: {
+//     description: {
+//       name: 'Венера',
+//       description: 'Описание Венера',
+//     },
+//     radius: ,
+//     rotationSpeed: ,
+//     rotationDirection: 1,
+//   },
+//   orbit: {
+//     radius: {
+//       perigely: ,
+//       afely: ,
+//     },
+//     rotationSpeed: ,
+//     rotationDirection: 1,
+//     angle: {
+//       x: 0,
+//       y: 0,
+//     },
+//   },
+//   sputnik: [],
+// };

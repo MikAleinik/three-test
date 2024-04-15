@@ -17,7 +17,12 @@ import SpaceObject from './space-object.js';
  * sputnik: PlanetParams[],
  * }} PlanetParams
  */
+
+const orbitPoints = 200;
+const orbitColor = 0xff0000;
+
 export default class Planet extends SpaceObject {
+  #sputniks = [];
   /**
    * @param {PlanetParams} planetParam
    */
@@ -32,10 +37,15 @@ export default class Planet extends SpaceObject {
       planetParam.sputnik.forEach((sputnik) => {
         const planetSputnik = new Planet(sputnik);
         this.planet.add(planetSputnik.getObject());
+        this.#sputniks.push(planetSputnik);
       });
     }
 
     this.#animate();
+  }
+  toggleOrbit() {
+    this.orbit.material.opacity = Number(!this.orbit.material.opacity);
+    this.#sputniks.forEach((sputnik) => sputnik.toggleOrbit());
   }
   #animate() {
     requestAnimationFrame(this.#animate.bind(this));
@@ -46,7 +56,7 @@ export default class Planet extends SpaceObject {
     );
     this.planet.position.applyQuaternion(this.quaternion);
 
-    this.planet.rotation.z +=
+    this.planet.rotation.y +=
       (this.objectParam.object.rotationSpeed * this.objectParam.object.rotationDirection) / this.coeffParam.speedCoeff;
   }
   /**
@@ -57,10 +67,10 @@ export default class Planet extends SpaceObject {
     this.quaternion = new THREE.Quaternion();
 
     const axisX = Math.abs(planetParam.orbit.angle.x);
-    const axisY = Math.abs(planetParam.orbit.angle.y);
-    let axisZ = 90;
-    if (axisX === 45 && axisY === 45) {
-      axisZ = 45;
+    let axisY = 90;
+    const axisZ = Math.abs(planetParam.orbit.angle.y);
+    if (axisX === 45 && axisZ === 45) {
+      axisY = 45;
     }
 
     this.orbitAxis = new THREE.Vector3(axisX, axisY, axisZ).normalize();
@@ -85,21 +95,25 @@ export default class Planet extends SpaceObject {
       false,
       0
     );
-    const points = curve.getPoints(50);
+    const points = curve.getPoints(orbitPoints);
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
-    const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
-    const orbit = new THREE.Line(geometry, material);
+    const material = new THREE.LineBasicMaterial({ color: orbitColor, transparent: true, opacity: 0.5 });
+    this.orbit = new THREE.Line(geometry, material);
 
     this.planet = this.spaceObject;
-    const planetX = 0;
-    const planetY = planetParam.orbit.radius / planetParam.units.dimensionCoeff;
+    const planetX = (planetParam.orbit.radius / planetParam.units.dimensionCoeff) * -1;
+    const planetY = 0;
     const planetZ = 0;
     this.planet.position.set(planetX, planetY, planetZ);
 
-    planetSystem.add(orbit);
+    planetSystem.add(this.orbit);
     planetSystem.add(this.planet);
 
     planetSystem.lookAt(this.orbitAxis);
+
+    planetSystem.castShadow = true;
+    planetSystem.receiveShadow = true;
+
     return planetSystem;
   }
 }

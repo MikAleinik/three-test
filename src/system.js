@@ -7,6 +7,7 @@ export default class PlanetSystem {
   #camera = null;
   #controls = null;
   #raycaster = null;
+  #planets = [];
   /**
    * @param {HTMLElement} container
    * @param {string} name
@@ -16,8 +17,6 @@ export default class PlanetSystem {
     this.#renderer = this.#createSystem();
     container.append(this.#renderer.domElement);
     this.#animate();
-
-    this.#tempLight();
   }
   showGrid() {
     const grid = new THREE.GridHelper(1000, 20, 0xc0c0c0, 0xc0c0c0);
@@ -30,23 +29,21 @@ export default class PlanetSystem {
     axes.position.set(0, 0, 0);
     this.#scene.add(axes);
   }
-  showPlane() {
-    const geometry1 = new THREE.PlaneGeometry(400, 200, 100, 100);
-    const material1 = new THREE.MeshLambertMaterial({ color: 0x008cf0 });
-    // const material1 = new THREE.ShadowMaterial({ color: 0x008cf0, transparent: false });
-    // material1.opacity = 0.5;
-    // material1.transparent = false;
-    const plane = new THREE.Mesh(geometry1, material1);
-    plane.position.y = -85;
-    plane.rotation.x = -Math.PI / 2;
-    plane.receiveShadow = true;
-    this.#scene.add(plane);
+  /**
+   * @param {import('./planet.js').default} planet
+   */
+  addPlanet(planet) {
+    this.#scene.add(planet.getObject());
+    this.#planets.push(planet);
   }
   /**
-   * @param {import('./space-object.js').default} spaceObject
+   * @param {import('./planet.js').default} sun
    */
-  addObject(spaceObject) {
-    this.#scene.add(spaceObject.getObject());
+  addSolar(sun) {
+    this.#scene.add(sun.getObject());
+  }
+  toggleOrbit() {
+    this.#planets.forEach((planet) => planet.toggleOrbit());
   }
   /**
    * @returns {THREE.WebGLRenderer}
@@ -63,8 +60,8 @@ export default class PlanetSystem {
     this.#scene.background = new THREE.Color(0xdcdcdc);
 
     this.#camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100000);
-    this.#camera.position.z = 600;
-    this.#camera.position.y = -1200;
+    this.#camera.position.z = 700;
+    this.#camera.position.y = 200;
     this.#camera.position.x = 0;
 
     this.#controls = new OrbitControls(this.#camera, renderer.domElement);
@@ -78,6 +75,7 @@ export default class PlanetSystem {
     const intersects = this.#raycaster.intersectObjects(this.#scene.children, true);
     if (intersects.length > 0) {
       const selectedObject = intersects[0];
+      // this.#camera.lookAt(selectedObject);
       console.log(selectedObject);
     }
   }
@@ -86,17 +84,5 @@ export default class PlanetSystem {
 
     this.#controls.update();
     this.#renderer.render(this.#scene, this.#camera);
-  }
-  #tempLight() {
-    const pointLight = new THREE.PointLight(0xffffff, 1, 500);
-    pointLight.position.set(0, 0, 400);
-    pointLight.castShadow = true;
-    pointLight.intensity = 750000;
-
-    this.#scene.add(pointLight);
-
-    const sphereSize = 3;
-    const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
-    this.#scene.add(pointLightHelper);
   }
 }

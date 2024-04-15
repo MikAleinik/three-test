@@ -16,8 +16,6 @@ const units = {
 };
 
 const system = new PlanetSystem(document.body, 'Солнечная система');
-// system.showGrid();
-// system.showAxis();
 
 const solarParams = {
   units,
@@ -27,11 +25,12 @@ const solarParams = {
       description: 'Описание',
     },
     radius: 100,
-    rotationSpeed: 100,
+    rotationSpeed: 5,
     rotationDirection: 1,
+    // color: 0xffff00,
+    texture: './img/sun2.jpg',
   },
-  color: 0xffff00,
-  power: 100000,
+  power: 100000 * 50,
 };
 
 const mercuryParams = {
@@ -44,6 +43,8 @@ const mercuryParams = {
     radius: 3,
     rotationSpeed: 0.003025555556,
     rotationDirection: 1,
+    texture: './img/mercury.jpg',
+    textureBump: './img/mercury-bump.jpg',
   },
   orbit: {
     radius: 200,
@@ -66,6 +67,8 @@ const venusParams = {
     radius: 6,
     rotationSpeed: 0.001811111111,
     rotationDirection: 1,
+    texture: './img/venus.jpg',
+    textureBump: './img/venus-bump.jpg',
   },
   orbit: {
     radius: 300,
@@ -86,8 +89,12 @@ const earthParams = {
       description: 'Описание земля',
     },
     radius: 15,
-    rotationSpeed: 0.465111111111,
+    rotationSpeed: 50,
     rotationDirection: 1,
+    texture: './img/earth.jpg',
+    textureBump: './img/earth-bump.jpg',
+    textureSpec: './img/earth-spec.jpg',
+    textureCloud: './img/earth-cloud.jpg',
   },
   orbit: {
     radius: 400,
@@ -109,6 +116,8 @@ const earthParams = {
         radius: 3,
         rotationSpeed: 0.010277777778,
         rotationDirection: 1,
+        texture: './img/moon.jpg',
+        textureBump: './img/moon-bump.jpg',
       },
       orbit: {
         radius: 20,
@@ -132,6 +141,8 @@ const marsParams = {
     radius: 6,
     rotationSpeed: 0.241172222222,
     rotationDirection: 1,
+    texture: './img/mars.jpg',
+    textureBump: './img/mars-bump.jpg',
   },
   orbit: {
     radius: 500,
@@ -153,6 +164,7 @@ const marsParams = {
         radius: 2,
         rotationSpeed: 2.14, // не верное значение
         rotationDirection: 1,
+        texture: './img/phobos.jpg',
       },
       orbit: {
         radius: 9,
@@ -175,6 +187,7 @@ const marsParams = {
         radius: 3,
         rotationSpeed: 3.94, // не верное значение
         rotationDirection: 1,
+        texture: './img/deimos.jpg',
       },
       orbit: {
         radius: 15,
@@ -191,9 +204,13 @@ const marsParams = {
 };
 
 const solar = new Solar(solarParams);
-system.addObject(solar);
+system.addSolar(solar);
 
-system.addObject(new Planet(mercuryParams));
-system.addObject(new Planet(venusParams));
-system.addObject(new Planet(earthParams));
-system.addObject(new Planet(marsParams));
+system.addPlanet(new Planet(mercuryParams));
+system.addPlanet(new Planet(venusParams));
+system.addPlanet(new Planet(earthParams));
+system.addPlanet(new Planet(marsParams));
+
+setTimeout(() => {
+  system.toggleOrbit();
+}, 100);

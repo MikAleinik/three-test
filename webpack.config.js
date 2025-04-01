@@ -6,7 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { merge } = require('webpack-merge');
 
 const isProduction = process.env.NODE_ENV == 'production';
-const outDir = isProduction ? './' : './dist';
+const outDir = isProduction ? './dist' : './dist';
 
 const baseConfig = {
   entry: {

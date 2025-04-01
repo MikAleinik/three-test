@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  width: 100%;
+
+  margin: 0 auto;
+}
+
+.solar-system {
+  height: 100%;
+  width: 100%;
+}
+
+aside.aside-panel {
+  display: flex;
+  flex-direction: column;
+
+  position: absolute;
+  top: 20px;
+  left: 20px;
+
+  color: #FFD700;
+}

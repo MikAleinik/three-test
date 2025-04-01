@@ -24,7 +24,10 @@ const baseConfig = {
       filename: 'index.html',
     }),
     new CopyWebpackPlugin({
-      patterns: [{ from: path.resolve(__dirname, 'src', 'img'), to: path.resolve(__dirname, outDir, 'img') }],
+      patterns: [
+        { from: path.resolve(__dirname, 'src', 'img'), to: path.resolve(__dirname, outDir, 'img') },
+        { from: path.resolve(__dirname, 'src', 'css'), to: path.resolve(__dirname, outDir, 'css') }
+      ],
     }),
     new CleanWebpackPlugin(),
   ],
